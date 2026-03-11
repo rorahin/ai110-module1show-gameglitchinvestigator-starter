@@ -51,30 +51,42 @@ Explain how the difficulty settings might not be correctly connected to the secr
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+**AI tools used:** VS Code Copilot (Inline Chat and Agent Mode), and manual testing.
+
+**Example of correct AI suggestion:**
+When I asked Copilot to "Find where guess parsing and validation happen" in Agent Mode, it identified that `parse_guess()` only checked if input was a number, not the range. Before implementing the `validate_guess()` function, I reviewed the function signature and tested boundary cases (guessing 100, 101, 1, 0) to confirm my logic was correct. I specifically made sure the range check compared `guess < low or guess > high` and wrote the test `test_validate_guess_out_of_range_high()` to verify 101 was rejected in a 1–100 range.
+
+**Example of misleading AI suggestion:**
+Copilot initially suggested converting decimals like 97.7 to 97 automatically. I tested this approach with inputs like "97.7" and "10.5" in the running app, and realized it silently accepted invalid input without user feedback. I rejected this suggestion because the game should only accept whole numbers. Instead, I modified `parse_guess()` to check for the "." character and return an error message "That is not a whole number." I verified this worked by manually entering "97.7" and seeing the error message appear immediately without consuming an attempt.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+**How I decided a bug was really fixed:**
+I tested fixes by replicating the original bug behavior, then confirming the error no longer occurred. For example, I tried entering 101 in Normal mode—originally it consumed an attempt; after the fix, it shows "Please guess between 1 and 100." with no game state change.
+
+**Test example using pytest:**
+I wrote `test_validate_guess_out_of_range_high()` which calls `validate_guess(101, 1, 100)` and asserts it returns `(False, "Please guess between 1 and 100.")`. Running `python3 -m pytest` confirmed this test passes, ensuring the range validation works correctly. I also manually tested edge cases: guessing 100 (valid), then 101 (invalid), to confirm the boundary is correct.
+
+**AI help with testing:**
+Copilot suggested the basic pytest structure, but I reviewed each test to match the actual function signatures. For `test_validate_guess_out_of_range_high()`, I confirmed the function returns a tuple `(bool, str)`, then wrote assertions for both the `ok` flag and the error message. I ran the test while the bug still existed (it failed), implemented the fix, then ran it again to confirm it passed. This "fail first" approach gave me confidence the test was actually catching the real bug.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+In Streamlit, every time a user interacts with the app (clicks a button, enters text), the entire script reruns from top to bottom. This means variables defined outside callbacks are reset on every rerun. Streamlit's `session_state` is a special dictionary that persists across reruns—if you store a value in `st.session_state.secret`, it stays the same even after a button click causes a rerun. The key insight is: without `session_state`, the secret number would be regenerated on every rerun, making the game unwinnable. I'd explain this to a friend by saying: "Streamlit is like a grocery store that rebuilds itself every time you pick up an item, but the `session_state` cashier remembers what you've already done."
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+**One habit I want to reuse:**
+Write tests *while* debugging, not after. When I wrote `test_validate_guess_out_of_range_high()`, it immediately showed me whether my fix worked. I'll use this "test-driven debugging" habit in future labs—it saves time and gives confidence in the fix.
+
+**One thing I'd do differently:**
+I would ask AI more targeted questions earlier. Instead of "Explain what's wrong," I would ask "Compare the expected behavior and actual behavior for this specific input." This gets straight to the root cause faster.
+
+**How this project changed my view of AI-generated code:**
+I learned that AI-generated code isn't "bad by default"—it's a starting point that requires critical review. When Copilot suggested the `validate_guess()` function structure, I didn't just implement it verbatim; I tested edge cases like 0, 1, 100, 101 manually in the app to ensure the boundaries were correct. I also wrote tests that failed first (before the fix) to prove they were actually testing something. This project showed me I can use AI for speed (getting ideas fast) and brainstorming (naming functions, suggesting test patterns), but I have to be the one verifying correctness through testing and boundary analysis.

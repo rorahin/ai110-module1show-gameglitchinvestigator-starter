@@ -51,18 +51,18 @@ Ran `python3 -m pytest` and confirmed all tests passed.
 
 ## ✅ Test Results
 
-All fixes were verified using pytest. Running `python3 -m pytest` executed the complete test suite with **23 tests passing**, confirming that all validation logic, game state initialization, and hint comparisons work correctly. The test suite includes:
+All fixes were verified using pytest. Running `python3 -m pytest` executed the complete test suite with **25 tests passing**, confirming that all validation logic, game state initialization, and hint comparisons work correctly. The test suite includes:
 
 - **6 original tests** for core game logic (win/loss/hints, state initialization, range validation)
-- **17 new edge-case tests** for robust input validation:
+- **19 new edge-case tests** for robust input validation:
   - Negative numbers, decimals, whitespace, special characters, zero
   - Boundary conditions (0, 1, 100, 101, 999999999999999)
   - Full validation flow from `parse_guess` → `validate_guess` → `check_guess`
   - Graceful error handling without game state corruption
 
-The screenshot below shows the successful test run with all 23 tests passing:
+The screenshot below shows the successful test run with all 25 tests passing:
 
-![Pytest Results](./images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
+![Pytest Results](images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
 
 ### Advanced Edge-Case Testing
 

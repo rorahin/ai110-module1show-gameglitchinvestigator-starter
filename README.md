@@ -62,7 +62,7 @@ All fixes were verified using pytest. Running `python3 -m pytest` executed the c
 
 The screenshot below shows the successful test run with all 25 tests passing:
 
-![Pytest Results](images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
+![Pytest Results](images/pytest-results.png)
 
 ### Advanced Edge-Case Testing
 
@@ -70,7 +70,7 @@ For the optional extension, I used Copilot to identify and generate additional p
 
 After reviewing the generated tests, I ran the full test suite and confirmed that all tests passed successfully.
 
-![Pytest results](images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
+![Pytest results](images/pytest-results.png)
 
 I used Copilot to propose edge-case scenarios and generate pytest cases, then reviewed the tests manually to confirm they matched the game's actual validation rules.
 

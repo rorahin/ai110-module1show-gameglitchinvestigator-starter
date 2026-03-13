@@ -72,6 +72,22 @@ def test_parse_guess_special_characters():
     assert error == "That is not a whole number."
 
 
+def test_parse_guess_non_numeric_string():
+    """Test that pure non-numeric strings (like 'hello') fail gracefully."""
+    ok, guess, error = parse_guess("hello")
+    assert ok is False
+    assert guess is None
+    assert error == "That is not a whole number."
+
+
+def test_parse_guess_empty_input():
+    """Test that empty input is rejected with clear error message."""
+    ok, guess, error = parse_guess("")
+    assert ok is False
+    assert guess is None
+    assert error == "Enter a guess."
+
+
 def test_parse_guess_zero():
     """Test that zero is parsed as a valid integer (validation rejects it)."""
     ok, guess, error = parse_guess("0")

@@ -51,7 +51,28 @@ Ran `python3 -m pytest` and confirmed all tests passed.
 
 ## ✅ Test Results
 
-All fixes were verified using pytest. Running `python3 -m pytest` executed the complete test suite, confirming that all validation logic, game state initialization, and hint comparisons work correctly. The test suite includes unit tests for range validation, decimal rejection, game state reset, and hint output—ensuring that invalid guesses no longer consume attempts or modify history, and that game feedback is accurate. The screenshot below shows the successful test run with all tests passing.
+All fixes were verified using pytest. Running `python3 -m pytest` executed the complete test suite with **23 tests passing**, confirming that all validation logic, game state initialization, and hint comparisons work correctly. The test suite includes:
+
+- **6 original tests** for core game logic (win/loss/hints, state initialization, range validation)
+- **17 new edge-case tests** for robust input validation:
+  - Negative numbers, decimals, whitespace, special characters, zero
+  - Boundary conditions (0, 1, 100, 101, 999999999999999)
+  - Full validation flow from `parse_guess` → `validate_guess` → `check_guess`
+  - Graceful error handling without game state corruption
+
+The screenshot below shows the successful test run with all 23 tests passing:
+
+![Pytest Results](./images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
+
+### Advanced Edge-Case Testing
+
+For the optional extension, I used Copilot to identify and generate additional pytest cases for edge-case inputs that could break the game logic. These tests covered cases such as negative numbers, decimal values, values above the allowed range, non-numeric strings, and empty input.
+
+After reviewing the generated tests, I ran the full test suite and confirmed that all tests passed successfully.
+
+![Pytest results](images/Screenshot%202026-03-12%20at%208.52.32%20PM.png)
+
+I used Copilot to propose edge-case scenarios and generate pytest cases, then reviewed the tests manually to confirm they matched the game's actual validation rules.
 
 ## 📸 Demo
 
